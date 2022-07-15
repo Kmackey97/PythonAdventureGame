@@ -1,0 +1,163 @@
+import time
+import random
+
+
+# random lists
+enemies = ['pirate', 'fairie', 'dragon', 'troll', 'yeti']
+magical_items = ['Sword of Ogoroth', 'Wand of Ezekial', 'Sting, \n'
+                 'the Mighty Blade of Bilbo', 'a boomerang of great renown']
+inventory = ["dagger"]
+
+# functions
+
+
+def print_pause(message_to_print):
+    print(message_to_print)
+    time.sleep(0.5)
+
+
+def intro(inventory):
+    # program start (intro)
+    enemy = (random.choice(enemies))
+    print_pause("You find yourself standing in an open field,"
+                "filled with grass and yellow wildflowers.\n")
+    print_pause("Rumor has it that a " + enemy + " is somewhere around here,"
+                "and has been terrifying the nearby village.\n")
+    print_pause("In front of "
+                "you is a house.\n")
+    print_pause("To your right "
+                "is a dark cave.\n")
+    if ("weapon" not in inventory):
+        print_pause("In your hand, you hold your "
+                    "trusty - but not very effective - dagger.\n")
+        field(inventory)
+    else:
+        field(inventory)
+
+
+def fight(inventory):
+    enemy = (random.choice(enemies))
+    weapon = inventory[0]
+    if ("weapon" in inventory):
+        print_pause('As the ' + enemy + ' moves to attack, '
+                    'you unsheath your new sword.\n')
+        print_pause('The' + weapon + ' shines brightly '
+                    'in your hand as you brace yourself for the attack.\n')
+        print_pause('But the ' + enemy + ' takes one look at \n'
+                    'your shiny new toy and runs away!')
+        print_pause('You have rid the town of the '
+                    + enemy + '. You are victorious!\n')
+        play_again = input('Would you like to play again? (y/n)')
+        if play_again == 'y':
+            intro(inventory)
+        elif play_again == 'n':
+            print_pause('Thanks for playing! See you next time!')
+            quit()
+    elif ("dagger" in inventory):
+        print_pause('You do your best...\n')
+        print_pause('but your dagger is no match for your foe.\n')
+        print_pause('You have been defeated!\n')
+        play_again = input('Would you like to play again? (y/n)\n')
+        if play_again == 'y':
+            print_pause("Execellent! Restarting the game...")
+            intro(inventory)
+        elif play_again == 'n':
+            print_pause("Thanks for playing! Goodbye!")
+            quit()
+
+
+def house(inventory):
+    choice = ''
+    play_again = ''
+    enemy = (random.choice(enemies))
+    print_pause('You approach the door'
+                'of the house.')
+    print_pause('You are about to knock when the '
+                'door opens and out steps a ' + enemy + '!\n')
+    print_pause("Eep! This is their house!\n")
+    print_pause("The " + enemy + " attacks you!\n")
+    choice = input("Would you like to (1) fight or (2) run away?\n")
+    if choice == '1':
+        fight(inventory)
+    elif choice == '2':
+        print_pause("You run back into the field. Luckily, "
+                    "you don't seem to have been followed.\n")
+        intro(inventory)
+
+
+def cave(inventory):
+    weapon = (random.choice(magical_items))
+    if (weapon not in inventory):
+        print_pause("You peer cautiously into the cave.\n")
+        print_pause('It turns out to be only a very small cave.\n')
+        print_pause('Your eye catches a glint of metal behind a rock.\n')
+        print_pause("You have found the " + weapon + "!\n")
+        print_pause('You discard your silly old dagger '
+                    'and take the sword with you.\n')
+        inventory.append("weapon")
+        inventory.remove("dagger")
+        print_pause('You walk back out to the field.')
+        intro(inventory)
+    elif (weapon in inventory):
+        print_pause("You find nothing of interest here "
+                    "except for your discarded dagger.")
+    return [inventory]
+
+
+def field(inventory):
+    choice = ''
+    print_pause('Enter 1 to knock on the door of the house.\n')
+    print_pause('Enter 2 to peer into the cave.\n')
+    print_pause('What would you like to do?\n')
+    choice = input('Please enter 1 or 2.\n')
+    if choice == '1':
+        house(inventory)
+    elif choice == '2':
+        cave(inventory)
+
+
+def approach(inventory):
+    choice = ''
+    choice = input("What would you like to do?\nPlease enter 1 or 2.\n")
+    # things that happen upon approaching places
+    if choice == '1':
+        print_pause("You approach the door of the house.")
+        enemy = (random.choice(enemies))
+        print_pause("You are about to knock when the door "
+                    "opens and out steps a wicked " + enemy + "!")
+        print_pause("Eep! This is the wicked " + enemy + "'s house!")
+        print_pause("The wicked " + enemy + " attacks you!")
+        if (weapon not in inventory):
+            print_pause("You feel a bit under-prepared for "
+                        "this, what with only having a tiny dagger.")
+        elif (weapon in inventory):
+            print_pause("You feel good about the potential of a fight.")
+        choice = input("Would you like to (1) fight or (2) run away?")
+        if choice == '1':
+            fight(inventory)
+        elif choice == '2':
+            field(inventory)
+    elif choice == '2':
+        weapon = (random.choice(magical_items))
+        print_pause("You peer cautiously into the cave.")
+        print_pause("It turns out to be only a very small cave.")
+        print_pause("You have found the " + weapon + "!")
+        print_pause("You discard your silly old dagger "
+                    "and take your new weapon with you.")
+        inventory.append("weapon")
+
+        print_pause("You walk back out to the field.")
+    else:
+        print_pause("No one understands you. Try again.\n")
+        choice = input("What would you like to do now? Enter 1 or 2.\n")
+        if choice == '1':
+            house(inventory)
+        elif choice == '2':
+            cave(inventory)
+
+
+# program start
+choice = ''
+
+intro(inventory)
+approach(inventory, weapon)
